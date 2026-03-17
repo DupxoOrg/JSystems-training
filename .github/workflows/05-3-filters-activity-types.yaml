@@ -1,0 +1,12 @@
+name: '05 – 3 – Filters and Activity Types'
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - 'CWICZENIA/05-usung-filters-and-activity-types/dokumentacja/**'
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Show the trigger'
+        run: echo "This workflow should NOT run when I push to the 05-usung-filters-and-activity-types folder. The event that triggered this workflow is ${{ github.event_name }} and the action is ${{ github.event.action }}."
