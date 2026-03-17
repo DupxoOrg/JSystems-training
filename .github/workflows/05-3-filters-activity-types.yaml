@@ -1,9 +1,9 @@
 name: '05 – 3 – Filters and Activity Types'
 on:
   workflow_dispatch:
-  push:
-    paths-ignore:
-      - 'CWICZENIA/05-usung-filters-and-activity-types/dokumentacja/**'
+  # push:
+  #   paths-ignore:
+  #     - 'CWICZENIA/05-usung-filters-and-activity-types/dokumentacja/**'
 jobs:
   echo:
     runs-on: ubuntu-latest
