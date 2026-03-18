@@ -1,0 +1,27 @@
+name: '07 - 0 - Expressions'
+run-name: "07-0 - Expressions - | DEBUG: ${{ inputs.debug && 'YUP, I''M ON' || 'NOPE, I''M OFF' }}"
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Enable debug mode'
+        type: boolean
+        required: true
+        default: false
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Show debug input value'
+        if: ${{ inputs.debug }}
+        run: |
+          echo "Triggered by ${{ github.event_name }}"
+          echo "Branch name: ${{ github.ref}}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Runner OS: ${{ runner.os }}"
+      - name: "Show debug when triggered from main"
+        if: ${{ inputs.debug && github.ref == 'refs/heads/main' }}
+        run: echo "I was triggered from the main branch with debug mode enabled."
+      - name: "Greeting"
+        run: echo "Hello World!"
