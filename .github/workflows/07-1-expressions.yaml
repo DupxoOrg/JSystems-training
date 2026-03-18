@@ -1,0 +1,35 @@
+name: '07 - 1 - Expressions'
+on:
+  push:
+    branches:
+      [ main, feature/07-expressions ]
+  pull_request:
+    branches:
+      [ feature/07-expressions ]
+  workflow_dispatch:
+env:
+  WORKDIR: 'CWICZENIA/07-expressions/pogoda_python_flask'
+  TEST_IMAGE: '07-weather-flask-app:test'
+  HUB_IMAGE_BASE: ${{ secrets.DOCKERHUB_USERNAME }}/python-weather
+  DEPLOY_ENV: ${{ github.ref == 'refs/heads/main' && 'prod07' || 'dev07' }}
+jobs:
+  build_and_run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            CWICZENIA/07-expressions/pogoda_python_flask
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.WORKDIR }}
+          tags: ${{ env.TEST_IMAGE }}
+          push: false
+          load: true
+      - name: 'Docker save'
+        run: docker save $TEST_IMAGE -o weather_app.tar
+      - uses: actions/upload-artifact@v6
+        with:
+          name: weather_app_image
+          path: weather_app.tar
