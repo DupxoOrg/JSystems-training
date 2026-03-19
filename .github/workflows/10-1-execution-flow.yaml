@@ -1,0 +1,33 @@
+name: '10 - 1 - Controlling the Execution Flow'
+on: 
+  workflow_dispatch:
+
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'A'
+      - id: set
+        run: |
+          # USTAWIANIE OUTPUTU STEPU zgodnie z nowym API:
+          # zapis w formacie klucz=wartość do pliku wskazanego przez $GITHUB_OUTPUT
+          echo "run_job_b=no" >> "$GITHUB_OUTPUT"
+    outputs:
+      run_job_b: ${{ steps.set.outputs.run_job_b }}
+  b:
+    runs-on: ubuntu-latest
+    needs: 
+      - a
+    if: ${{ needs.a.outputs.run_job_b == 'yes' }}
+    steps:
+      - run: echo 'B'
+  c:
+    runs-on: ubuntu-latest
+    needs:
+      - b
+    if: always() && (needs.b.result == 'success' || needs.b.result == 'skipped')
+    steps:
+      - run: echo "C" 
+
+
+    
